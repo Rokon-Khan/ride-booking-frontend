@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { Toaster } from "sonner";
 import { Footer } from "../common/Footer";
-import { Navbar } from "../common/Navbar";
+import Navbar from "../common/Navbar";
 
 export const Layout = () => {
   return (
