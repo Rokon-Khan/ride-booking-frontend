@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layouts/Layout";
+import Login from "@/pages/Auth/Login";
 import HomePage from "@/pages/HomePage";
 
 import NotFound from "@/pages/NotFound";
@@ -8,7 +9,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [{ index: true, element: <HomePage /> }],
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "login", element: <Login /> },
+    ],
   },
   {
     path: "*",
