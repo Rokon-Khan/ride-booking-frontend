@@ -64,7 +64,7 @@ const Navbar = () => {
               </Link>
             </Button>
             <Button asChild className="btn-cta">
-              <Link to="/register" className="flex items-center space-x-2">
+              <Link to="/signup" className="flex items-center space-x-2">
                 <UserPlus className="h-4 w-4" />
                 <span>Sign Up</span>
               </Link>
