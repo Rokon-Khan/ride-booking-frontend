@@ -135,16 +135,16 @@
 @layer components {
   /* Button variants */
   .btn-hero {
-    @apply bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white font-semibold px-8 py-4 rounded-lg shadow-medium hover:shadow-strong hover:scale-105 transition-all duration-300;
+    @apply bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white font-semibold px-8 py-4 rounded-lg shadow-medium hover:shadow-strong hover:scale-105 transition-all duration-300 cursor-pointer;
   }
   .btn-cta {
-    @apply bg-secondary text-secondary-foreground font-medium px-6 py-3 rounded-lg shadow-soft hover:shadow-medium hover:bg-[var(--color-secondary-light)] hover:scale-105 transition-all duration-300;
+    @apply bg-secondary text-secondary-foreground font-medium px-6 py-3 rounded-lg shadow-soft hover:shadow-medium hover:bg-[var(--color-secondary-light)] hover:scale-105 transition-all duration-300 cursor-pointer;
   }
   .btn-outline-primary {
-    @apply border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground font-medium px-6 py-3 rounded-lg transition-all duration-300;
+    @apply border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground font-medium px-6 py-3 rounded-lg transition-all duration-300 cursor-pointer;
   }
   .btn-sos {
-    @apply bg-accent text-accent-foreground font-bold px-6 py-3 rounded-full shadow-medium hover:shadow-strong hover:scale-110 animate-pulse transition-all duration-300;
+    @apply bg-accent text-accent-foreground font-bold px-6 py-3 rounded-full shadow-medium hover:shadow-strong hover:scale-110 animate-pulse transition-all duration-300 cursor-pointer;
   }
 
   /* Card variants */
