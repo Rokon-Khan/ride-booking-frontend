@@ -2,7 +2,7 @@ import CallToAction from "@/components/landing/CallToAction";
 import Features from "@/components/landing/Features";
 import Hero from "@/components/landing/Hero";
 import HowItWorks from "@/components/landing/HowItWorks";
-import Testimonials from "@/components/landing/TestiMonials";
+import Testimonials from "@/components/landing/Testimonials";
 
 export default function HomePage() {
   return (
