@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layouts/Layout";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
+import VerifyOTP from "@/pages/Auth/VerifyOTP";
 import HomePage from "@/pages/HomePage";
 
 import NotFound from "@/pages/NotFound";
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Register /> },
+      { path: "verify-otp", element: <VerifyOTP /> },
     ],
   },
   {
