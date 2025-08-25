@@ -1,6 +1,8 @@
 import { Layout } from "@/components/layouts/Layout";
+import ForgotPasswordPage from "@/pages/Auth/ForgotPassword";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
+import ResetPassword from "@/pages/Auth/ResetPassword";
 import VerifyOTP from "@/pages/Auth/VerifyOTP";
 import HomePage from "@/pages/HomePage";
 
@@ -16,6 +18,8 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "signup", element: <Register /> },
       { path: "verify-otp", element: <VerifyOTP /> },
+      { path: "forgot-password", element: <ForgotPasswordPage /> },
+      { path: "reset-password", element: <ResetPassword /> },
     ],
   },
   {
