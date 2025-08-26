@@ -12,7 +12,7 @@ export const authToken = {
   setAccess: (token: string, options?: Cookies.CookieAttributes) =>
     Cookies.set(ACCESS_TOKEN_KEY, token, {
       sameSite: "strict",
-      // secure: true,
+      secure: true,
       ...options,
     }),
   removeAccess: () => Cookies.remove(ACCESS_TOKEN_KEY),
@@ -21,7 +21,7 @@ export const authToken = {
   setRefresh: (token: string, options?: Cookies.CookieAttributes) =>
     Cookies.set(REFRESH_TOKEN_KEY, token, {
       sameSite: "strict",
-      // secure: true,
+      secure: true,
       ...options,
     }),
   removeRefresh: () => Cookies.remove(REFRESH_TOKEN_KEY),

@@ -17,19 +17,16 @@ import {
 } from "@/components/ui/select";
 import {
   Ban,
-  Bell,
   Car,
   CheckCircle,
   DollarSign,
   Eye,
-  LogOut,
   Search,
   TrendingUp,
   User,
   Users,
 } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
 import { toast } from "sonner";
 // import { useToast } from '@/hooks/use-toast';
 
@@ -120,46 +117,22 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    toast.success("You have been successfully logged out.");
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 1500);
-  };
+  // const handleLogout = () => {
+  //   toast.success("You have been successfully logged out.");
+  //   setTimeout(() => {
+  //     window.location.href = "/";
+  //   }, 1500);
+  // };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-primary text-primary-foreground shadow-medium">
-        <div className="container-width py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Link to="/" className="flex items-center space-x-2">
-                <Car className="h-8 w-8" />
-                <span className="text-xl font-bold">RideShare Pro</span>
-              </Link>
-              <Badge variant="secondary" className="ml-4">
-                Admin
-              </Badge>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-primary-foreground hover:text-primary-foreground hover:bg-white/10"
-              >
-                <Bell className="h-5 w-5" />
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={handleLogout}
-                className="text-primary-foreground hover:text-primary-foreground hover:bg-white/10"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </div>
-          </div>
+      <header className="bg-gradient-hero dark:bg-primary  text-primary-foreground shadow-medium">
+        <div className="py-4">
+          <h1 className="text-2xl font-bold">Welcome to Admin Dashboard</h1>
+          <p className="text-primary-foreground">
+            Manage users, rides, and platform settings
+          </p>
         </div>
       </header>
 

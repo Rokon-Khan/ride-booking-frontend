@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/context/AuthContext";
+// import { useAuth } from "@/context/AuthContext";
 import {
   BarChart3,
   Car,
@@ -24,12 +24,20 @@ import {
   User,
   Users,
 } from "lucide-react";
-import { NavLink, useLocation } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
+import { Badge } from "../ui/badge";
 
 const AppSidebar = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const { state } = useSidebar();
   const location = useLocation();
+  const user = {
+    id: "123",
+    name: "John Doe",
+    email: "john.doe@example.com",
+    avatar: "https://via.placeholder.com/150",
+    role: "admin",
+  };
 
   const getMenuItems = () => {
     if (!user) return [];
@@ -37,7 +45,7 @@ const AppSidebar = () => {
     const baseItems = [
       {
         title: "Dashboard",
-        url: `/${user.role}/dashboard`,
+        url: `dashboard/${user.role}/`,
         icon: Home,
       },
       {
@@ -141,8 +149,8 @@ const AppSidebar = () => {
 
   const getNavClass = (path: string) => {
     return isActive(path)
-      ? "bg-primary/10 text-primary font-medium"
-      : "hover:bg-muted/50 text-muted-foreground hover:text-foreground";
+      ? "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+      : "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50";
   };
 
   return (
@@ -150,7 +158,19 @@ const AppSidebar = () => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className={state === "collapsed" ? "sr-only" : ""}>
-            Main Navigation
+            <div className="flex items-center space-x-3">
+              <Link to="/" className="flex items-center space-x-2 group">
+                <div className="p-1 bg-gradient-hero rounded-lg shadow-medium group-hover:shadow-strong transition-all duration-300">
+                  <Car className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-sm font-heading font-bold text-foreground">
+                  RideShare Pro
+                </span>
+              </Link>
+              <Badge variant="secondary" className="ml-4">
+                Admin
+              </Badge>
+            </div>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

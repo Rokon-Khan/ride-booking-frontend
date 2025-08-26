@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Camera, Edit3, Mail, MapPin, Phone, User } from "lucide-react";
 import { useState } from "react";
 
-import { useAuth } from "@/context/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -38,16 +38,29 @@ const profileSchema = z.object({
 type ProfileFormData = z.infer<typeof profileSchema>;
 
 const Profile = () => {
-  const { user, updateProfile } = useAuth();
+  const { updateProfile } = {} as any; // useAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+
+  const user = {
+    id: "123",
+    email: "john.doe@example.com",
+    avatar: "https://via.placeholder.com/150",
+    role: "admin",
+    isVerified: true,
+    profile: {
+      name: "John Doe",
+      phone: "123-456-7890",
+      address: "123 Main St, Anytown, USA",
+    },
+  };
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: user?.name || "",
-      phone: user?.phone || "",
-      address: user?.address || "",
+      name: user?.profile?.name || "",
+      phone: user?.profile?.phone || "",
+      address: user?.profile?.address || "",
     },
   });
 
@@ -104,11 +117,11 @@ const Profile = () => {
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <Avatar className="h-24 w-24 border-4 border-background shadow-medium">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src={user.avatar} alt={user.profile.name} />
                   <AvatarFallback className="text-lg font-semibold bg-gradient-hero text-white">
-                    {user.name
+                    {user?.profile?.name
                       .split(" ")
-                      .map((n) => n[0])
+                      .map((n: string) => n[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
@@ -122,7 +135,7 @@ const Profile = () => {
 
               <div className="text-center space-y-2">
                 <h3 className="text-xl font-semibold text-foreground">
-                  {user.name}
+                  {user.profile.name}
                 </h3>
                 <Badge
                   variant={getRoleBadgeVariant(user.role)}
@@ -260,7 +273,7 @@ const Profile = () => {
                   <span className="text-sm font-medium">Phone</span>
                 </div>
                 <p className="text-foreground font-medium">
-                  {user.phone || "Not provided"}
+                  {user.profile.phone || "Not provided"}
                 </p>
               </div>
             </div>
@@ -271,7 +284,7 @@ const Profile = () => {
                 <span className="text-sm font-medium">Address</span>
               </div>
               <p className="text-foreground font-medium">
-                {user.address || "Not provided"}
+                {user.profile.address || "Not provided"}
               </p>
             </div>
 

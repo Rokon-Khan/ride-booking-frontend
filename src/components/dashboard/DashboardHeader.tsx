@@ -9,23 +9,31 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useAuth } from "@/context/AuthContext";
+// import { useAuth } from "@/context/AuthContext";
 import { Bell, LogOut, Search, User } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
 const DashboardHeader = () => {
-  const { user, logout } = useAuth();
+  // const { user, logout } = useAuth();
+
+  const user = {
+    id: "123",
+    name: "John Doe",
+    email: "john.doe@example.com",
+    avatar: "https://via.placeholder.com/150",
+    role: "rider",
+  };
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    // logout();
     navigate("/");
   };
 
-  if (!user) return null;
+  // if (!user) return null;
 
   return (
-    <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center px-6 gap-4">
+    <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center px-6 gap-4 sticky top-0 z-40">
       <SidebarTrigger />
 
       <div className="flex-1 flex items-center gap-4">
