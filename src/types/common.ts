@@ -50,8 +50,6 @@ export interface IUser {
   role: UserRole;
   status: UserStatus;
   profile: IUserProfile;
-  createdAt: string; // ISO date
-  updatedAt: string; // ISO date
   password?: string;
   [key: string]: any;
 }
