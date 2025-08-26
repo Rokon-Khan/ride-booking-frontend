@@ -115,6 +115,10 @@ export interface IVerifyOtp {
   otp: string;
 }
 
+export interface IUpdateUser {
+  [key: string]: any; // Flexible type for user updates
+}
+
 // Backend returns tokens at top-level (NOT nested in data)
 export interface ILoginResponse {
   [x: string]: any;
@@ -228,6 +232,7 @@ const authApi = baseApi.injectEndpoints({
         headers: { "Content-Type": "application/json" },
       }),
     }),
+    // single user details get
     userInfo: builder.query({
       query: () => ({
         url: "/auth/me",
@@ -236,6 +241,62 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["USER"],
     }),
+
+    // user profile update with patch
+    updateMe: builder.mutation({
+      query: (body) => ({
+        url: "/auth/me",
+        method: "PATCH",
+        data: body,
+        headers: withAuthHeader(),
+      }),
+      // Optimistic update
+      async onQueryStarted(patch, { dispatch, queryFulfilled }) {
+        // Update cache optimistically
+        const patchResult = dispatch(
+          authApi.util.updateQueryData("userInfo", undefined, (draft: any) => {
+            if (draft?.profile) {
+              draft.profile.name = patch.name ?? draft.profile.name;
+              draft.profile.phone = patch.phone ?? draft.profile.phone;
+              draft.profile.avatarUrl =
+                patch.avatarUrl ?? draft.profile.avatarUrl;
+              draft.profile.address = patch.address ?? draft.profile.address;
+            }
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo(); // Rollback on failure
+        }
+      },
+      invalidatesTags: ["USER"],
+    }),
+
+    // // user profile update with patch
+    // updateMe: builder.mutation<IResponse<any>, IUpdateUser>({
+    //   query: (body) => ({
+    //     url: "/auth/me",
+    //     method: "PATCH",
+    //     data: body,
+    //     headers: withAuthHeader({ "Content-Type": "application/json" }),
+    //   }),
+    //   async onQueryStarted(body, { dispatch, queryFulfilled }) {
+    //     // Optimistic update
+    //     const patchResult = dispatch(
+    //       authApi.util.updateQueryData("userInfo", undefined, (draft) => {
+    //         Object.assign(draft?.data || {}, body);
+    //       })
+    //     );
+    //     try {
+    //       await queryFulfilled;
+    //     } catch {
+    //       patchResult.undo(); // Revert on failure
+    //     }
+    //   },
+    //   invalidatesTags: ["USER"],
+    // }),
   }),
 });
 
@@ -249,6 +310,7 @@ export const {
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useUserInfoQuery,
+  useUpdateMeMutation,
 } = authApi;
 
 export default authApi;

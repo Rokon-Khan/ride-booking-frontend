@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { withAuthHeader } from "@/lib/auth";
 import type {
   IDriverVehicle,
@@ -133,6 +134,7 @@ const driverApi = baseApi.injectEndpoints({
         method: "GET",
         headers: withAuthHeader(),
       }),
+      transformResponse: (response: { vehicle: any }) => response.vehicle,
       providesTags: ["DRIVER"],
     }),
 

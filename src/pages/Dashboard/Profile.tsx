@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,62 +20,163 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Camera, Edit3, Mail, MapPin, Phone, User } from "lucide-react";
-import { useState } from "react";
+import {
+  Camera,
+  Car,
+  Edit3,
+  Hash,
+  Mail,
+  MapPin,
+  Phone,
+  User,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 
+import { useImageUpload } from "@/hooks/useImageUpload";
+import {
+  useUpdateMeMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/authApi";
+import {
+  useUpdateVehicleDetailsMutation,
+  useVehicleDetailsQuery,
+} from "@/redux/features/driver/driverApi";
+
+// schema for profile
 const profileSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  phone: z.string().min(10, "Phone number must be at least 10 characters"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  phone: z.string().min(11, "Phone number must be at least 11 characters"),
   address: z.string().min(5, "Address must be at least 5 characters"),
+  avatarUrl: z.string().optional(),
 });
 
-type ProfileFormData = z.infer<typeof profileSchema>;
+// schema for driver vehicle
+const vehicleSchema = z.object({
+  model: z.string().min(3, "Model must be at least 3 characters"),
+  licensePlate: z.string().min(3, "License plate is required"),
+});
+
+// Define a union type for the form data
+type RiderFormData = z.infer<typeof profileSchema>;
+type DriverFormData = z.infer<typeof profileSchema> &
+  z.infer<typeof vehicleSchema>;
+type FormData = RiderFormData | DriverFormData;
 
 const Profile = () => {
-  const { updateProfile } = {} as any; // useAuth();
+  const { data: user, isLoading } = useUserInfoQuery(undefined);
+  const [updateMe] = useUpdateMeMutation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const { uploadImage, isUploading } = useImageUpload();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const user = {
-    id: "123",
-    email: "john.doe@example.com",
-    avatar: "https://via.placeholder.com/150",
-    role: "admin",
-    isVerified: true,
-    profile: {
-      name: "John Doe",
-      phone: "123-456-7890",
-      address: "123 Main St, Anytown, USA",
-    },
-  };
+  // Fetch driver vehicle info if role=driver
+  const { data: vehicle, isLoading: isVehicleLoading } = useVehicleDetailsQuery(
+    undefined,
+    { skip: user?.role !== "driver" }
+  );
 
-  const form = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
+  console.log("data:", vehicle);
+  console.log("user:", user);
+
+  const [updateVehicleDetails] = useUpdateVehicleDetailsMutation();
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>();
+
+  // Use the correct schema based on user role
+  const formSchema =
+    user?.role === "driver"
+      ? profileSchema.merge(vehicleSchema)
+      : profileSchema;
+
+  const profileForm = useForm<FormData>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user?.profile?.name || "",
-      phone: user?.profile?.phone || "",
-      address: user?.profile?.address || "",
-    },
+      name: "",
+      phone: "",
+      address: "",
+      avatarUrl: undefined,
+      ...(user?.role === "driver"
+        ? {
+            model: "",
+            licensePlate: "",
+          }
+        : {}),
+    } as any,
   });
 
-  const onSubmit = async (data: ProfileFormData) => {
-    setIsUpdating(true);
+  useEffect(() => {
+    if (user) {
+      profileForm.reset({
+        name: user.profile?.name || "",
+        phone: user.profile?.phone || "",
+        address: user.profile?.address || "",
+        avatarUrl: user.profile?.avatarUrl || undefined,
+        ...(user.role === "driver" && vehicle
+          ? {
+              model: vehicle.model || "",
+              licensePlate: vehicle.licensePlate || "",
+            }
+          : {}),
+      });
+    }
+  }, [user, vehicle, profileForm]);
 
-    try {
-      const success = await updateProfile(data);
-      if (success) {
-        toast.success("Your profile has been successfully updated.");
-        setIsDialogOpen(false);
-      } else {
-        toast.error("Failed to update profile. Please try again.");
+  const handleAvatarClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreviewUrl(URL.createObjectURL(file));
+      try {
+        const url = await uploadImage(file);
+        if (url) {
+          profileForm.setValue("avatarUrl", url);
+          toast.success("Image uploaded successfully");
+        }
+      } catch {
+        setPreviewUrl(undefined);
+        toast.error("Failed to upload image");
       }
-    } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+    }
+  };
+
+  const onSubmit = async (data: FormData) => {
+    setIsUpdating(true);
+    try {
+      const profileData = {
+        name: data.name,
+        phone: data.phone,
+        address: data.address,
+        avatarUrl: data.avatarUrl,
+      };
+      await updateMe(profileData).unwrap();
+
+      if (
+        user?.role === "driver" &&
+        "model" in data &&
+        "licensePlate" in data
+      ) {
+        const vehicleData = {
+          model: data.model as string,
+          licensePlate: data.licensePlate as string,
+        };
+        await updateVehicleDetails({ body: vehicleData }).unwrap();
+      }
+
+      toast.success("Profile updated successfully");
+      setIsDialogOpen(false);
+      setPreviewUrl(undefined);
+    } catch {
+      toast.error("Failed to update profile");
     } finally {
       setIsUpdating(false);
     }
@@ -95,7 +195,7 @@ const Profile = () => {
     }
   };
 
-  if (!user) return null;
+  if (isLoading || !user) return <p>Loading...</p>;
 
   return (
     <div className="space-y-6">
@@ -115,35 +215,28 @@ const Profile = () => {
         <Card className="md:col-span-1">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center space-y-4">
-              <div className="relative">
-                <Avatar className="h-24 w-24 border-4 border-background shadow-medium">
-                  <AvatarImage src={user.avatar} alt={user.profile.name} />
-                  <AvatarFallback className="text-lg font-semibold bg-gradient-hero text-white">
-                    {user?.profile?.name
-                      .split(" ")
-                      .map((n: string) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <Button
-                  size="icon"
-                  className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full bg-primary hover:bg-primary-dark"
-                >
-                  <Camera className="h-4 w-4" />
-                </Button>
-              </div>
+              <Avatar className="h-24 w-24 border-4 border-background shadow-medium">
+                <AvatarImage
+                  src={user?.profile?.avatarUrl}
+                  alt={user.profile?.name}
+                />
+                <AvatarFallback>
+                  {user?.profile?.name
+                    ?.split(" ")
+                    .map((n: string) => n[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
 
               <div className="text-center space-y-2">
-                <h3 className="text-xl font-semibold text-foreground">
-                  {user.profile.name}
-                </h3>
+                <h3 className="text-xl font-semibold">{user.profile?.name}</h3>
                 <Badge
                   variant={getRoleBadgeVariant(user.role)}
                   className="capitalize"
                 >
                   {user.role}
                 </Badge>
-                {user.isVerified && (
+                {user.isEmailVerified && (
                   <Badge
                     variant="outline"
                     className="text-green-600 border-green-600"
@@ -160,18 +253,54 @@ const Profile = () => {
                     Update Profile
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Update Profile</DialogTitle>
                   </DialogHeader>
 
-                  <Form {...form}>
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Avatar
+                        className="h-24 w-24 cursor-pointer"
+                        onClick={handleAvatarClick}
+                      >
+                        <AvatarImage
+                          src={previewUrl || user?.profile?.avatarUrl}
+                          alt={user.profile?.name}
+                        />
+                        <AvatarFallback>
+                          {user?.profile?.name
+                            ?.split(" ")
+                            .map((n: string) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        id="avatarUpload"
+                        ref={fileInputRef}
+                        onChange={handleAvatarChange}
+                      />
+                      <Button
+                        size="icon"
+                        className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full bg-primary hover:bg-primary-dark cursor-pointer"
+                        onClick={handleAvatarClick}
+                        disabled={isUploading}
+                      >
+                        <Camera className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Form {...profileForm}>
                     <form
-                      onSubmit={form.handleSubmit(onSubmit)}
+                      onSubmit={profileForm.handleSubmit(onSubmit)}
                       className="space-y-4"
                     >
                       <FormField
-                        control={form.control}
+                        control={profileForm.control}
                         name="name"
                         render={({ field }) => (
                           <FormItem>
@@ -197,7 +326,7 @@ const Profile = () => {
                       </div>
 
                       <FormField
-                        control={form.control}
+                        control={profileForm.control}
                         name="phone"
                         render={({ field }) => (
                           <FormItem>
@@ -211,7 +340,7 @@ const Profile = () => {
                       />
 
                       <FormField
-                        control={form.control}
+                        control={profileForm.control}
                         name="address"
                         render={({ field }) => (
                           <FormItem>
@@ -223,6 +352,38 @@ const Profile = () => {
                           </FormItem>
                         )}
                       />
+
+                      {user.role === "driver" && (
+                        <>
+                          <FormField
+                            control={profileForm.control}
+                            name="model"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Vehicle Model</FormLabel>
+                                <FormControl>
+                                  <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={profileForm.control}
+                            name="licensePlate"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>License Plate</FormLabel>
+                                <FormControl>
+                                  <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
+                      )}
 
                       <div className="flex gap-2 pt-2">
                         <Button
@@ -236,7 +397,11 @@ const Profile = () => {
                         <Button
                           type="submit"
                           className="flex-1 btn-cta"
-                          disabled={isUpdating}
+                          disabled={
+                            isUpdating ||
+                            isUploading ||
+                            (user.role === "driver" && isVehicleLoading)
+                          }
                         >
                           {isUpdating ? "Updating..." : "Update"}
                         </Button>
@@ -259,7 +424,7 @@ const Profile = () => {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
+              <div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Mail className="h-4 w-4" />
                   <span className="text-sm font-medium">Email</span>
@@ -267,26 +432,53 @@ const Profile = () => {
                 <p className="text-foreground font-medium">{user.email}</p>
               </div>
 
-              <div className="space-y-2">
+              <div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Phone className="h-4 w-4" />
                   <span className="text-sm font-medium">Phone</span>
                 </div>
                 <p className="text-foreground font-medium">
-                  {user.profile.phone || "Not provided"}
+                  {user.profile?.phone || "Not provided"}
                 </p>
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
                 <span className="text-sm font-medium">Address</span>
               </div>
               <p className="text-foreground font-medium">
-                {user.profile.address || "Not provided"}
+                {user.profile?.address || "Not provided"}
               </p>
             </div>
+
+            {user.role === "driver" && (
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Car className="h-4 w-4" />
+                    <span className="text-sm font-medium">Vehicle Model</span>
+                  </div>
+                  <p className="text-foreground font-medium">
+                    {vehicle?.model || "Not provided"}
+                    {console.log(vehicle?.model)}
+                  </p>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Hash className="h-4 w-4" />
+                    <span className="text-sm font-medium">License Plate</span>
+                  </div>
+                  <p className="text-foreground font-medium">
+                    {vehicle?.licensePlate || "Not provided"}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* keep your stats section unchanged */}
 
             <div className="pt-4 border-t">
               <h4 className="font-semibold mb-3">Account Statistics</h4>
