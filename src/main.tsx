@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { RouterProvider } from "react-router";
 import "./index.css";
 
+import { Toaster } from "sonner";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { ThemeProvider } from "./providers/ThemeProvider.tsx";
 import { store } from "./redux/store.ts";
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <RouterProvider router={router} />
+          <Toaster richColors position="top-center" />
         </ThemeProvider>
       </AuthProvider>
     </ReduxProvider>

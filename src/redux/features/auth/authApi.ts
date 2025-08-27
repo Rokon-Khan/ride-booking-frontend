@@ -209,7 +209,7 @@ const authApi = baseApi.injectEndpoints({
         try {
           await queryFulfilled;
         } finally {
-          authToken.removeRefresh();
+          authToken.clearAll();
         }
       },
       invalidatesTags: ["USER"],
