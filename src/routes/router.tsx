@@ -8,6 +8,7 @@ import HomePage from "@/pages/HomePage";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AdminDashboard from "@/pages/Dashboard/AdminDashboard";
+import DriverManagement from "@/pages/Dashboard/AdminPages/DriverManagement";
 import UserDetailPage from "@/pages/Dashboard/AdminPages/userDetailpage";
 import UserManagement from "@/pages/Dashboard/AdminPages/UserManagement";
 import DriverDashboard from "@/pages/Dashboard/DriverDashboard";
@@ -34,11 +35,11 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard/profile", element: <Profile /> },
       { path: "dashboard/user-management", element: <UserManagement /> },
-      // { path: "dashboard/user-management/:id", element: <UserDetailWrapper /> },
       {
         path: "dashboard/user-management/:userId",
         element: <UserDetailPage />,
       },
+      { path: "dashboard/driver-management", element: <DriverManagement /> },
       { path: "dashboard/rider", element: <RiderDashboard /> },
       { path: "dashboard/driver", element: <DriverDashboard /> },
       { path: "dashboard/admin", element: <AdminDashboard /> },

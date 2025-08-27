@@ -65,14 +65,19 @@ export interface IDriverVehicle {
 
 export interface IDriver {
   _id: string;
-  user: string; // User ObjectId
+  user: string; // User ID referencing IUser
   approved: boolean;
   suspended: boolean;
   available: boolean;
-  vehicle: IDriverVehicle;
-  earnings: number; // Aggregate earnings
-  [key: string]: any;
+  earnings: number;
+  vehicle?: {
+    licensePlate?: string;
+    model?: string;
+  };
+  __v: number;
 }
+
+// Other types (IReport, IRide, etc.) remain unchanged
 
 /* ===================== Ride (IRide) ===================== */
 

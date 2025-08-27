@@ -13,6 +13,7 @@ import {
 import {
   BarChart3,
   Car,
+  CarTaxiFront,
   Clock,
   DollarSign,
   History,
@@ -119,6 +120,11 @@ const AppSidebar = () => {
           title: "User Management",
           url: "dashboard/user-management",
           icon: Users,
+        },
+        {
+          title: "Driver Management",
+          url: "dashboard/driver-management",
+          icon: CarTaxiFront,
         },
         {
           title: "Ride Management",
