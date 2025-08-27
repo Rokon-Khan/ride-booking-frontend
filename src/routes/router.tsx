@@ -97,6 +97,7 @@ import AboutUs from "@/pages/AboutUs";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
+import Pricing from "@/pages/Pricing";
 import { useUserInfoQuery } from "@/redux/features/auth/authApi";
 import { type ReactElement } from "react";
 import ProtectedRoute from "./ProtectedRoute";
@@ -132,6 +133,7 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "faq", element: <FAQ /> },
       { path: "features", element: <Features /> },
+      { path: "pricing", element: <Pricing /> },
     ],
   },
 
