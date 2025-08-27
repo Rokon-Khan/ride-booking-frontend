@@ -6,7 +6,6 @@ import { RouterProvider } from "react-router";
 import "./index.css";
 
 import { Toaster } from "sonner";
-import { AuthProvider } from "./context/AuthContext.tsx";
 import { ThemeProvider } from "./providers/ThemeProvider.tsx";
 import { store } from "./redux/store.ts";
 import router from "./routes/router.tsx";
@@ -14,12 +13,10 @@ import router from "./routes/router.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ReduxProvider store={store}>
-      <AuthProvider>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <RouterProvider router={router} />
-          <Toaster richColors position="top-center" />
-        </ThemeProvider>
-      </AuthProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <RouterProvider router={router} />
+        <Toaster richColors position="top-center" />
+      </ThemeProvider>
     </ReduxProvider>
   </StrictMode>
 );
