@@ -26,10 +26,10 @@ export const authToken = {
     }),
   removeRefresh: () => Cookies.remove(REFRESH_TOKEN_KEY),
 
-  getRole: () => Cookies.get(ROLE_KEY),
-  setRole: (role: string) =>
-    Cookies.set(ROLE_KEY, role, { sameSite: "strict" }),
-  removeRole: () => Cookies.remove(ROLE_KEY),
+  // getRole: () => Cookies.get(ROLE_KEY),
+  // setRole: (role: string) =>
+  //   Cookies.set(ROLE_KEY, role, { sameSite: "strict" }),
+  // removeRole: () => Cookies.remove(ROLE_KEY),
 
   clearAll: () => {
     Cookies.remove(ACCESS_TOKEN_KEY);

@@ -171,11 +171,9 @@ const authApi = baseApi.injectEndpoints({
             (data as any).accessToken || data?.data?.accessToken;
           const refreshToken =
             (data as any).refreshToken || data?.data?.refreshToken;
-          const role = (data as any).role || data?.data?.role;
 
           if (accessToken) authToken.setAccess(accessToken);
           if (refreshToken) authToken.setRefresh(refreshToken);
-          if (role) authToken.setRole(role);
         } catch {
           // ignore
         }
