@@ -9,7 +9,9 @@ import HomePage from "@/pages/HomePage";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AdminDashboard from "@/pages/Dashboard/AdminDashboard";
 import DriverManagement from "@/pages/Dashboard/AdminPages/DriverManagement";
-import UserDetailPage from "@/pages/Dashboard/AdminPages/userDetailpage";
+import RideDetailPage from "@/pages/Dashboard/AdminPages/RideDetailPage";
+import RideManagement from "@/pages/Dashboard/AdminPages/RideManagement";
+import UserDetailPage from "@/pages/Dashboard/AdminPages/userDetailPage";
 import UserManagement from "@/pages/Dashboard/AdminPages/UserManagement";
 import DriverDashboard from "@/pages/Dashboard/DriverDashboard";
 import Profile from "@/pages/Dashboard/Profile";
@@ -30,6 +32,8 @@ const router = createBrowserRouter([
       { path: "reset-password", element: <ResetPassword /> },
     ],
   },
+
+  // Admin Dashboard
   {
     element: <DashboardLayout />,
     children: [
@@ -40,6 +44,11 @@ const router = createBrowserRouter([
         element: <UserDetailPage />,
       },
       { path: "dashboard/driver-management", element: <DriverManagement /> },
+      { path: "dashboard/ride-management", element: <RideManagement /> },
+      {
+        path: "dashboard/ride-management/:rideId",
+        element: <RideDetailPage />,
+      },
       { path: "dashboard/rider", element: <RiderDashboard /> },
       { path: "dashboard/driver", element: <DriverDashboard /> },
       { path: "dashboard/admin", element: <AdminDashboard /> },

@@ -140,6 +140,18 @@ const adminApi = baseApi.injectEndpoints({
       invalidatesTags: ["RIDE"],
     }),
 
+    viewDriver: builder.query<
+      IResponse<{ _id: string; user: string }>,
+      { driverId: string }
+    >({
+      query: ({ driverId }) => ({
+        url: `/drivers/${driverId}`,
+        method: "GET",
+        headers: withAuthHeader(),
+      }),
+      providesTags: (_r, _e, arg) => [{ type: "DRIVER", id: arg.driverId }],
+    }),
+
     rideReports: builder.query<IResponse<IReport>, void>({
       query: () => ({
         url: "/reports/rides",
@@ -196,6 +208,7 @@ export const {
   useUserReportsQuery,
   useDriverReportsQuery,
   useEarningsReportsQuery,
+  useViewDriverQuery,
 } = adminApi;
 
 export default adminApi;

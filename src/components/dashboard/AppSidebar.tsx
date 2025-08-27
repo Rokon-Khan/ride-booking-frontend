@@ -128,17 +128,17 @@ const AppSidebar = () => {
         },
         {
           title: "Ride Management",
-          url: "/admin/rides",
+          url: "dashboard/ride-management",
           icon: Car,
         },
         {
           title: "Analytics",
-          url: "/admin/analytics",
+          url: "dashboard/analytics",
           icon: BarChart3,
         },
         {
           title: "Reports",
-          url: "/admin/reports",
+          url: "dashboard/reports",
           icon: Clock,
         },
       ];
