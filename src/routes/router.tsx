@@ -96,6 +96,7 @@ import NotFound from "@/pages/NotFound";
 import AboutUs from "@/pages/AboutUs";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
+import Features from "@/pages/Features";
 import { useUserInfoQuery } from "@/redux/features/auth/authApi";
 import { type ReactElement } from "react";
 import ProtectedRoute from "./ProtectedRoute";
@@ -130,6 +131,7 @@ const router = createBrowserRouter([
       { path: "about-us", element: <AboutUs /> },
       { path: "contact", element: <Contact /> },
       { path: "faq", element: <FAQ /> },
+      { path: "features", element: <Features /> },
     ],
   },
 
