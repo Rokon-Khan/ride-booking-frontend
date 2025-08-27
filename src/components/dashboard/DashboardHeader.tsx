@@ -9,28 +9,38 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-// import { useAuth } from "@/context/AuthContext";
+import {
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/authApi";
 import { Bell, LogOut, Search, User } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
 const DashboardHeader = () => {
-  // const { user, logout } = useAuth();
-
-  const user = {
-    id: "123",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    avatar: "https://via.placeholder.com/150",
-    role: "rider",
-  };
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // logout();
-    navigate("/");
+  // Get logged-in user info
+  const { data: user, isLoading } = useUserInfoQuery(undefined);
+
+  // Logout mutation
+  const [logout] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      navigate("/"); // Redirect after logout
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
-  // if (!user) return null;
+  if (isLoading) {
+    return (
+      <header className="h-16 flex items-center px-6">Loading user...</header>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center px-6 gap-4 sticky top-0 z-40">
@@ -64,11 +74,14 @@ const DashboardHeader = () => {
           <PopoverTrigger asChild>
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage
+                  src={user?.profile?.avatarUrl}
+                  alt={user?.profile?.name}
+                />
                 <AvatarFallback className="bg-gradient-hero text-white">
-                  {user.name
-                    .split(" ")
-                    .map((n) => n[0])
+                  {user?.profile?.name
+                    ?.split(" ")
+                    .map((n: string) => n[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>
@@ -78,27 +91,30 @@ const DashboardHeader = () => {
             <div className="flex flex-col space-y-4">
               <div className="flex items-center space-x-2">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage
+                    src={user?.profile?.avatarUrl}
+                    alt={user?.profile?.name}
+                  />
                   <AvatarFallback className="bg-gradient-hero text-white">
-                    {user.name
-                      .split(" ")
-                      .map((n) => n[0])
+                    {user?.profile?.name
+                      ?.split(" ")
+                      .map((n: string) => n[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">
-                    {user.name}
+                    {user?.profile?.name}
                   </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    {user.email}
+                    {user?.email}
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-col space-y-1">
                 <Badge variant="outline" className="w-fit capitalize">
-                  {user.role}
+                  {user?.role}
                 </Badge>
               </div>
 

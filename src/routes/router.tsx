@@ -8,6 +8,7 @@ import HomePage from "@/pages/HomePage";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AdminDashboard from "@/pages/Dashboard/AdminDashboard";
+import UserManagement from "@/pages/Dashboard/AdminPages/UserManagement";
 import DriverDashboard from "@/pages/Dashboard/DriverDashboard";
 import Profile from "@/pages/Dashboard/Profile";
 import RiderDashboard from "@/pages/Dashboard/RiderDashboard";
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       { path: "dashboard/profile", element: <Profile /> },
+      { path: "dashboard/user-management", element: <UserManagement /> },
       { path: "dashboard/rider", element: <RiderDashboard /> },
       { path: "dashboard/driver", element: <DriverDashboard /> },
       { path: "dashboard/admin", element: <AdminDashboard /> },

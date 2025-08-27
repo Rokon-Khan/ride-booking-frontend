@@ -117,7 +117,7 @@ const AppSidebar = () => {
         ...baseItems,
         {
           title: "User Management",
-          url: "/admin/users",
+          url: "dashboard/user-management",
           icon: Users,
         },
         {
