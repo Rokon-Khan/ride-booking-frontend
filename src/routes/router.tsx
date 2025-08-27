@@ -93,6 +93,7 @@ import UserDetailPage from "@/pages/Dashboard/AdminPages/userDetailPage";
 import Profile from "@/pages/Dashboard/Profile";
 import NotFound from "@/pages/NotFound";
 
+import AboutUs from "@/pages/AboutUs";
 import { useUserInfoQuery } from "@/redux/features/auth/authApi";
 import { type ReactElement } from "react";
 import ProtectedRoute from "./ProtectedRoute";
@@ -124,6 +125,7 @@ const router = createBrowserRouter([
       { path: "verify-otp", element: <VerifyOTP /> },
       { path: "forgot-password", element: <ForgotPasswordPage /> },
       { path: "reset-password", element: <ResetPassword /> },
+      { path: "about-us", element: <AboutUs /> },
     ],
   },
 
