@@ -7,10 +7,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  useLogoutMutation,
-  useUserInfoQuery,
-} from "@/redux/features/auth/authApi";
+import { useAuth } from "@/hooks/useAuth";
+import { useLogoutMutation } from "@/redux/features/auth/authApi";
 import { Car, LogIn, LogOut, Menu, User, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
@@ -20,9 +18,7 @@ const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: user } = useUserInfoQuery(undefined, {
-    skip: false,
-  });
+  const { data: user } = useAuth();
   const [logout] = useLogoutMutation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -39,7 +35,7 @@ const Navbar = () => {
   const navigationItems = [
     { name: "Home", href: "/" },
     { name: "Features", href: "/features" },
-    { name: "About Us", href: "/about" },
+    { name: "About Us", href: "/about-us" },
     { name: "Contact", href: "/contact" },
     { name: "FAQ", href: "/faq" },
     { name: "Pricing", href: "/pricing" },
