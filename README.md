@@ -1,6 +1,8 @@
 # Ride Booking System Frontend
 
-![Ride Booking System](https://i.ibb.co.com/whngx982/Ride-Sahring-Pro-Fetures-Image.png) <!-- Replace with actual screenshot or logo if available -->
+![Ride Booking System](https://i.ibb.co.com/jPp37rCF/Ride-Sahring-Pro-Fetures-Image.jpg)
+
+# Live deployment Link: https://ride-sharing-pro.netlify.app
 
 ## Overview
 
@@ -8,7 +10,7 @@ This is the frontend application for a Ride Booking Platform, similar to Uber or
 
 The application supports public landing pages for unauthenticated users, secure JWT-based authentication, and tailored dashboards for each role. It emphasizes polished UX with responsive design, data visualizations, real-time-like updates (via polling), and safety features like an SOS button.
 
-Live Demo: [https://ride-sharing-pro.netlify.app/](https://ride-sharing-pro.netlify.app/)
+Live Demo: [https://ride-sharing-pro.netlify.app/](https://ride-sharing-pro.netlify.app)
 
 GitHub Repository: [https://github.com/Rokon-Khan/ride-booking-frontend](https://github.com/Rokon-Khan/ride-booking-frontend)
 
