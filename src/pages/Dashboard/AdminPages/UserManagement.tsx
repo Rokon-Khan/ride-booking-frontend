@@ -12,11 +12,13 @@ import {
 import { Ban, CheckCircle, Eye, Search } from "lucide-react";
 import { useState } from "react";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   useBlockUserMutation,
   useListAllUsersQuery,
   useUnblockUserMutation,
 } from "@/redux/features/admin/adminApi";
+import { Link } from "react-router";
 
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,7 +59,18 @@ const UserManagement = () => {
   });
 
   if (isLoading) {
-    return <div className="p-6">Loading users...</div>;
+    return (
+      <div>
+        <Card className="w-full max-w-md mx-auto mt-6">
+          <CardContent>
+            <Skeleton className="h-12 w-12 rounded-full mx-auto mb-4" />
+            <Skeleton className="h-4 w-32 mx-auto mb-2" />
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-3/4 mx-auto" />
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -143,10 +156,12 @@ const UserManagement = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Button variant="outline" size="sm">
-                    <Eye className="h-4 w-4 mr-2" />
-                    View
-                  </Button>
+                  <Link to={`/dashboard/user-management/${user?._id}`}>
+                    <Button variant="outline" size="sm">
+                      <Eye className="h-4 w-4 mr-2" />
+                      View
+                    </Button>
+                  </Link>
                   {user.status === "active" ? (
                     <Button
                       variant="destructive"
