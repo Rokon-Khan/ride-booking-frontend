@@ -1,7 +1,27 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   Select,
   SelectContent,
@@ -9,27 +29,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Ban, CheckCircle, Eye, Search } from "lucide-react";
-import { useState } from "react";
-
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   useBlockUserMutation,
   useListAllUsersQuery,
   useUnblockUserMutation,
 } from "@/redux/features/admin/adminApi";
+import { Ban, CheckCircle, Eye, Search } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router";
 
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading } = useListAllUsersQuery();
   const [blockUser] = useBlockUserMutation();
   const [unblockUser] = useUnblockUserMutation();
 
   const users = data?.data || [];
+
+  // Pagination setup
+  const itemsPerPage = 10;
+  const totalUsers = users.length;
+  const totalPages = Math.ceil(totalUsers / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedUsers = users.slice(startIndex, startIndex + itemsPerPage);
 
   const handleUserAction = async (
     userId: string,
@@ -46,7 +74,7 @@ const UserManagement = () => {
     }
   };
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = paginatedUsers.filter((user) => {
     const matchesSearch =
       user.profile?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -163,14 +191,33 @@ const UserManagement = () => {
                     </Button>
                   </Link>
                   {user.status === "active" ? (
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleUserAction(user._id, "block")}
-                    >
-                      <Ban className="h-4 w-4 mr-2" />
-                      Block
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm">
+                          <Ban className="h-4 w-4 mr-2" />
+                          Block
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Block {user.profile?.name || "this user"}?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action will restrict the user from accessing
+                            the platform. You can unblock later if needed.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleUserAction(user._id, "block")}
+                          >
+                            Yes, Block
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   ) : (
                     <Button
                       variant="default"
@@ -191,6 +238,48 @@ const UserManagement = () => {
           <p className="text-muted-foreground text-center">No users found.</p>
         )}
       </div>
+
+      {/* Shadcn Pagination */}
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => {
+                  if (currentPage > 1) setCurrentPage(currentPage - 1);
+                }}
+              />
+            </PaginationItem>
+
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+              (page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => setCurrentPage(page)}
+                    isActive={currentPage === page}
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            )}
+
+            {totalPages > 3 && currentPage < totalPages - 1 && (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => {
+                  if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

@@ -1,10 +1,12 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   useBlockUserMutation,
   useViewUserQuery,
 } from "@/redux/features/admin/adminApi";
-import { useParams } from "react-router";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate, useParams } from "react-router";
 import { UserDetail } from "./UserDetail"; // Adjust the import path as needed
 
 const UserDetailPage = () => {
@@ -15,6 +17,7 @@ const UserDetailPage = () => {
     isError,
   } = useViewUserQuery({ userId: userId! });
   const [blockUser] = useBlockUserMutation();
+  const navigate = useNavigate();
 
   const handleBlock = async (userId: string) => {
     try {
@@ -22,6 +25,10 @@ const UserDetailPage = () => {
     } catch (err) {
       console.error("Failed to block user", err);
     }
+  };
+
+  const handleBack = () => {
+    navigate(-1); // Navigate to the previous page
   };
 
   if (isLoading) {
@@ -51,6 +58,14 @@ const UserDetailPage = () => {
 
   return (
     <div className="p-6">
+      <Button
+        variant="outline"
+        onClick={handleBack}
+        className="mb-4 flex items-center"
+      >
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        Back
+      </Button>
       <UserDetail
         user={{
           id: user._id,
