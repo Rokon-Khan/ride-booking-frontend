@@ -14,6 +14,10 @@ interface IDriverEarningsAggregate {
   earnings: number;
 }
 
+interface AvailabilityGetResponse {
+  available: boolean;
+}
+
 /**
  * Vehicle update payload – backend vehicle object is:
  * { model: string; licensePlate: string }
@@ -35,6 +39,22 @@ const driverApi = baseApi.injectEndpoints({
         headers: withAuthHeader({ "Content-Type": "application/json" }),
       }),
       invalidatesTags: ["DRIVER"],
+    }),
+
+    // GET availability (new)
+    driverAvailability: builder.query<{ available: boolean }, void>({
+      query: () => ({
+        url: "/drivers/availability",
+        method: "GET",
+        headers: withAuthHeader(),
+      }),
+      transformResponse: (resp: AvailabilityGetResponse | any) => ({
+        available:
+          typeof resp?.available === "boolean"
+            ? resp.available
+            : !!resp?.driver?.available,
+      }),
+      providesTags: ["AVAILABILITY"],
     }),
 
     // Rides discoverable for driver
@@ -97,6 +117,10 @@ const driverApi = baseApi.injectEndpoints({
         method: "GET",
         headers: withAuthHeader(),
       }),
+      transformResponse: (response: any) => {
+        // backend sends { ride: {...} } - normalize into IResponse shape
+        return { success: true, data: response?.ride ?? null };
+      },
       providesTags: (result) =>
         result?.data?._id
           ? [{ type: "RIDE", id: result.data._id }, "RIDE"]
@@ -110,8 +134,32 @@ const driverApi = baseApi.injectEndpoints({
         method: "GET",
         headers: withAuthHeader(),
       }),
+      transformResponse: (resp: any) =>
+        Array.isArray(resp?.data) ? resp.data : Array.isArray(resp) ? resp : [],
       providesTags: ["RIDE"],
     }),
+
+    // driverRideHistory: builder.query<IRide[], void>({
+    //   query: () => ({
+    //     url: "/rides/history",
+    //     method: "GET",
+    //     headers: withAuthHeader(),
+    //   }),
+    //   transformResponse: (raw: any) => {
+    //     // Normalize possible backend shapes
+    //     if (Array.isArray(raw)) return raw;
+    //     if (Array.isArray(raw?.rides)) return raw.rides;
+    //     if (Array.isArray(raw?.data)) return raw.data;
+    //     return [];
+    //   },
+    //   providesTags: (result) =>
+    //     result
+    //       ? [
+    //           ...result.map((r) => ({ type: "RIDE" as const, id: r._id })),
+    //           "RIDE",
+    //         ]
+    //       : ["RIDE"],
+    // }),
 
     // Earnings aggregate (adjust if backend returns different structure)
     earningsAggregate: builder.query<IResponse<IDriverEarningsAggregate>, void>(
@@ -157,6 +205,7 @@ const driverApi = baseApi.injectEndpoints({
 
 export const {
   useSetAvailabilityMutation,
+  useDriverAvailabilityQuery,
   useAvailableRidesQuery,
   useAcceptRideMutation,
   useRejectRideMutation,

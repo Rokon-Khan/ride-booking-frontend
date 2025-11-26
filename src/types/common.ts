@@ -91,16 +91,61 @@ export interface IRideTimestamps {
   [key: string]: any;
 }
 
+// export interface IRide {
+//   _id: string;
+//   rider: string; // IUser _id
+//   driver?: string; // IDriver _id
+//   pickup: ILocationPoint;
+//   destination: ILocationPoint;
+//   status: RideStatus;
+//   timestamps: IRideTimestamps;
+//   fare: number;
+//   [key: string]: any;
+// }
+
 export interface IRide {
   _id: string;
-  rider: string; // IUser _id
-  driver?: string; // IDriver _id
-  pickup: ILocationPoint;
-  destination: ILocationPoint;
-  status: RideStatus;
-  timestamps: IRideTimestamps;
+  pickup: {
+    address: string;
+    lat: number;
+    lng: number;
+  };
+  destination: {
+    address: string;
+    lat: number;
+    lng: number;
+  };
   fare: number;
-  [key: string]: any;
+  status: RideStatus;
+  timestamps: Record<string, string>;
+
+  // These must match what your API actually returns
+  rider: {
+    _id: string;
+    email: string;
+    profile: {
+      name: string;
+      phone?: string;
+      address?: string;
+    };
+  };
+
+  driver?: {
+    _id: string;
+    user: {
+      _id: string;
+      email: string;
+      profile: {
+        name: string;
+        phone?: string;
+        address?: string;
+      };
+    };
+    vehicle?: {
+      model: string;
+      licensePlate: string;
+    };
+  };
 }
 
 /* ===================== Reports & Generic Responses ===================== */

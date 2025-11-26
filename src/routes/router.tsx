@@ -93,8 +93,17 @@ import UserDetailPage from "@/pages/Dashboard/AdminPages/userDetailPage";
 import Profile from "@/pages/Dashboard/Profile";
 import NotFound from "@/pages/NotFound";
 
+import GoOnline from "@/components/dashboard/driver/GoOnline";
+import ActiveRide from "@/components/dashboard/rider/ActiveRide";
 import AboutUs from "@/pages/AboutUs";
+import PendingApproval from "@/pages/Auth/PendingApproval";
 import Contact from "@/pages/Contact";
+import NotificationAlert from "@/pages/Dashboard/AdminPages/NotificationAlert";
+import DriverCurrentRide from "@/pages/Dashboard/DriverPages/DriverCurrentRide";
+import RideRequestsPage from "@/pages/Dashboard/DriverPages/RideRequestsPage";
+import BookRide from "@/pages/Dashboard/RiderPages/BookRide";
+import RideHistory from "@/pages/Dashboard/RiderPages/RideHistory";
+import RideHistoryDetail from "@/pages/Dashboard/RiderPages/RideHistoryDetail";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
 import Pricing from "@/pages/Pricing";
@@ -177,6 +186,47 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "goonline",
+        element: (
+          <ProtectedRoute roles={["driver"]}>
+            <GoOnline />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "ride-requests",
+        element: (
+          <ProtectedRoute roles={["driver"]}>
+            <RideRequestsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "current-ride",
+        element: (
+          <ProtectedRoute roles={["driver"]}>
+            <DriverCurrentRide />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "ride-history",
+        element: (
+          <ProtectedRoute roles={["driver", "rider"]}>
+            <RideHistory />
+          </ProtectedRoute>
+        ),
+      },
+
+      {
+        path: "ride-history/:id",
+        element: (
+          <ProtectedRoute roles={["driver", "rider"]}>
+            <RideHistoryDetail />
+          </ProtectedRoute>
+        ),
+      },
 
       // Admin-only nested pages
       {
@@ -227,10 +277,44 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "notifications",
+        element: (
+          <ProtectedRoute roles={["admin"]}>
+            <NotificationAlert />
+          </ProtectedRoute>
+        ),
+      },
+      // rider routes
+      {
+        path: "book-ride",
+        element: (
+          <ProtectedRoute roles={["rider"]}>
+            <BookRide />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "active-ride",
+        element: (
+          <ProtectedRoute roles={["rider"]}>
+            <ActiveRide />
+          </ProtectedRoute>
+        ),
+      },
+      // {
+      //   path: "ride-history",
+      //   element: (
+      //     <ProtectedRoute roles={["rider"]}>
+      //       <RideHistory />
+      //     </ProtectedRoute>
+      //   ),
+      // },
     ],
   },
 
   // Fallback
+  { path: "pending-approval", element: <PendingApproval /> },
   { path: "*", element: <NotFound /> },
 ]);
 

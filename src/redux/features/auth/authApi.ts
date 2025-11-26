@@ -100,6 +100,7 @@
 // (Your original authApi can stay mostly the same, just reuse the helper.)
 import { authToken, withAuthHeader } from "@/lib/auth";
 import type { IResponse } from "@/types/common";
+import Cookies from "js-cookie";
 import { baseApi } from "../../baseApi";
 
 /* Example auth types (adjust to your real ones) */
@@ -171,9 +172,11 @@ const authApi = baseApi.injectEndpoints({
             (data as any).accessToken || data?.data?.accessToken;
           const refreshToken =
             (data as any).refreshToken || data?.data?.refreshToken;
+          const role = (data as any).role || data?.data?.role;
 
           if (accessToken) authToken.setAccess(accessToken);
           if (refreshToken) authToken.setRefresh(refreshToken);
+          if (role) authToken.setRole(role);
         } catch {
           // ignore
         }
@@ -233,6 +236,19 @@ const authApi = baseApi.injectEndpoints({
     // single user details get
     userInfo: builder.query({
       query: () => ({
+        transformErrorResponse: (response: any) => {
+          if (response.status === 403) {
+            Cookies.remove("accessToken");
+            Cookies.remove("role");
+            window.location.href = "/pending-approval";
+          }
+          if (response.status === 401) {
+            Cookies.remove("accessToken");
+            Cookies.remove("role");
+            window.location.href = "/login";
+          }
+          return response;
+        },
         url: "/auth/me",
         method: "GET",
         headers: withAuthHeader(),
@@ -272,6 +288,24 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["USER"],
     }),
 
+    troubleRide: builder.mutation({
+      query: (body) => ({
+        url: "/auth/trouble",
+        method: "POST",
+        data: body,
+        headers: withAuthHeader(),
+      }),
+    }),
+
+    troubleNotification: builder.query({
+      query: () => ({
+        url: "/auth/notifications",
+        method: "GET",
+        headers: withAuthHeader(),
+      }),
+      providesTags: ["ADMIN"],
+    }),
+
     // // user profile update with patch
     // updateMe: builder.mutation<IResponse<any>, IUpdateUser>({
     //   query: (body) => ({
@@ -309,6 +343,8 @@ export const {
   useResetPasswordMutation,
   useUserInfoQuery,
   useUpdateMeMutation,
+  useTroubleRideMutation,
+  useTroubleNotificationQuery,
 } = authApi;
 
 export default authApi;

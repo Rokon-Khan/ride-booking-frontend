@@ -194,10 +194,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/hooks/useAuth";
+// import { useAuth } from "@/hooks/useAuth";
 // import { useAuth } from "@/context/AuthContext";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+// import { get } from "http";
+import Cookies from "js-cookie";
 import { Car, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -217,7 +219,9 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   // const { user, refetchUser } = useAuth();
-  const { user } = useAuth();
+  // const { user } = useAuth();
+
+  const role = Cookies.get("role");
 
   const {
     register,
@@ -231,11 +235,11 @@ const Login = () => {
 
   // Redirect if user is already logged in
   useEffect(() => {
-    if (user) {
-      const redirectPath = getRoleBasedRedirect(user.role);
+    if (role) {
+      const redirectPath = getRoleBasedRedirect(role);
       navigate(redirectPath, { replace: true });
     }
-  }, [user, navigate]);
+  }, [role, navigate]);
 
   // Function to determine redirect path based on user role
   const getRoleBasedRedirect = (role: string) => {
@@ -256,8 +260,15 @@ const Login = () => {
       // Login user - RTK Query will handle token storage automatically
       const response = await login(data).unwrap();
 
-      // Refetch user data after successful login
-      // refetchUser();
+      if (response.status === "pending" || response.status === "blocked") {
+        // ✅ clear any auth cookies
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
+        Cookies.remove("role");
+
+        navigate("/pending-approval");
+        return;
+      }
 
       toast.success("Login Successful!");
 

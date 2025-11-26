@@ -37,11 +37,9 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 
+import { useAuth } from "@/hooks/useAuth";
 import { useImageUpload } from "@/hooks/useImageUpload";
-import {
-  useUpdateMeMutation,
-  useUserInfoQuery,
-} from "@/redux/features/auth/authApi";
+import { useUpdateMeMutation } from "@/redux/features/auth/authApi";
 import {
   useUpdateVehicleDetailsMutation,
   useVehicleDetailsQuery,
@@ -68,7 +66,8 @@ type DriverFormData = z.infer<typeof profileSchema> &
 type FormData = RiderFormData | DriverFormData;
 
 const Profile = () => {
-  const { data: user, isLoading } = useUserInfoQuery(undefined);
+  // const { data: user, isLoading } = useUserInfoQuery(undefined);
+  const { user } = useAuth();
   const [updateMe] = useUpdateMeMutation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -80,9 +79,6 @@ const Profile = () => {
     undefined,
     { skip: user?.role !== "driver" }
   );
-
-  console.log("data:", vehicle);
-  console.log("user:", user);
 
   const [updateVehicleDetails] = useUpdateVehicleDetailsMutation();
   const [previewUrl, setPreviewUrl] = useState<string | undefined>();
@@ -195,7 +191,7 @@ const Profile = () => {
     }
   };
 
-  if (isLoading || !user) return <p>Loading...</p>;
+  // if (isLoading || !user) return <p>Loading...</p>;
 
   return (
     <div className="space-y-6">

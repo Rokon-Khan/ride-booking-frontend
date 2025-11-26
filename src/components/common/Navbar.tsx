@@ -18,7 +18,9 @@ const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: user } = useAuth();
+  const { user } = useAuth();
+  //   const auth = useAuth();
+  // const user = "data" in auth ? auth.data : "user" in auth ? auth.user : null;
   const [logout] = useLogoutMutation();
 
   const isActive = (path: string) => location.pathname === path;
