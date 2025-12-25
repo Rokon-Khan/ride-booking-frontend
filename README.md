@@ -2,7 +2,7 @@
 
 ![Ride Booking System](https://i.ibb.co.com/jPp37rCF/Ride-Sahring-Pro-Fetures-Image.jpg)
 
-## Live deployment Link: https://ride-sharing-pro.netlify.app
+## Live deployment Link: https://ride-sharing-pro.vercel.app
 
 ## Overview
 
@@ -10,7 +10,7 @@ This is the frontend application for a Ride Booking Platform, similar to Uber or
 
 The application supports public landing pages for unauthenticated users, secure JWT-based authentication, and tailored dashboards for each role. It emphasizes polished UX with responsive design, data visualizations, real-time-like updates (via polling), and safety features like an SOS button.
 
-Live Demo: [https://ride-sharing-pro.netlify.app/](https://ride-sharing-pro.netlify.app)
+Live Demo: [https://ride-sharing-pro.vercel.app](https://ride-sharing-pro.vercel.app)
 
 GitHub Repository: [https://github.com/Rokon-Khan/ride-booking-frontend](https://github.com/Rokon-Khan/ride-booking-frontend)
 
@@ -18,7 +18,7 @@ GitHub Repository: [https://github.com/Rokon-Khan/ride-booking-frontend](https:/
 
 - **Admin**: Email: `admin@admin.com`, Password: `Pass@135`
 - **Driver**: Email: `rokonjust@gmail.com`, Password: `Pass@135`
-- **Rider**: Email: `rokonjust@gmail.com`, Password: `Pass@135`
+- **Rider**: Email: `rokon454@gmail.com`, Password: `Pass@135`
 
 **Note**: Driver and Rider share the same email for testing purposes, but roles are distinguished during login/registration. Use the role selection in registration for new accounts.
 
