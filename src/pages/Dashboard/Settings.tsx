@@ -207,7 +207,7 @@ const Settings = () => {
                   </div>
                   <Button
                     type="submit"
-                    variant="gradient"
+                    variant="default"
                     disabled={loading.profile}
                     className="w-full md:w-auto"
                   >
@@ -346,7 +346,7 @@ const Settings = () => {
                   </div>
                   <Button
                     type="submit"
-                    variant="gradient"
+                    variant="default"
                     disabled={
                       loading.password ||
                       passwordData.newPassword.length < 6 ||
