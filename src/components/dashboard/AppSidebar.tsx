@@ -20,7 +20,6 @@ import {
   BarChart3,
   Car,
   CarTaxiFront,
-  Clock,
   DollarSign,
   History,
   Home,
@@ -99,11 +98,11 @@ export const AppSidebar = () => {
             url: "/dashboard/current-ride",
             icon: Navigation,
           },
-          {
-            title: "Earnings",
-            url: "/dashboard/driver/earnings",
-            icon: DollarSign,
-          },
+          // {
+          //   title: "Earnings",
+          //   url: "/dashboard/driver/earnings",
+          //   icon: DollarSign,
+          // },
           {
             title: "Ride History",
             url: "/dashboard/ride-history",
@@ -129,7 +128,7 @@ export const AppSidebar = () => {
             icon: Car,
           },
           { title: "Analytics", url: "/dashboard/analytics", icon: BarChart3 },
-          { title: "Reports", url: "/dashboard/reports", icon: Clock },
+          // { title: "Reports", url: "/dashboard/reports", icon: Clock },
         ];
       default:
         return base;
@@ -239,7 +238,10 @@ export const AppSidebar = () => {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <NavLink to="/settings" className={getNavClass("/settings")}>
+                  <NavLink
+                    to="/dashboard/settings"
+                    className={getNavClass("/dashboard/settings")}
+                  >
                     <Settings className="h-4 w-4" />
                     {state !== "collapsed" && <span>Settings</span>}
                   </NavLink>

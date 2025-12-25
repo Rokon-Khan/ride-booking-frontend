@@ -106,6 +106,7 @@ import RideRequestsPage from "@/pages/Dashboard/DriverPages/RideRequestsPage";
 import BookRide from "@/pages/Dashboard/RiderPages/BookRide";
 import RideHistory from "@/pages/Dashboard/RiderPages/RideHistory";
 import RideHistoryDetail from "@/pages/Dashboard/RiderPages/RideHistoryDetail";
+import Settings from "@/pages/Dashboard/Settings";
 import Drivers from "@/pages/Drivers";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
@@ -178,6 +179,7 @@ const router = createBrowserRouter([
 
       // Common (accessible by any authenticated user)
       { path: "profile", element: <Profile /> },
+      { path: "settings", element: <Settings /> },
 
       // Role specific roots
       {
