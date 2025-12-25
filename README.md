@@ -2,7 +2,7 @@
 
 ![Ride Booking System](https://i.ibb.co.com/jPp37rCF/Ride-Sahring-Pro-Fetures-Image.jpg)
 
-## Live deployment Link: https://ride-sharing-pro.netlify.app
+## Live deployment Link: https://ride-sharing-pro.vercel.app
 
 ## Overview
 
