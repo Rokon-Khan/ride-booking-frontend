@@ -30,40 +30,50 @@ const Footer = () => {
 
   const footerLinks = {
     company: [
-      { name: "About Us", href: "/about" },
+      { name: "About Us", href: "/about-us" },
       { name: "Features", href: "/features" },
       { name: "Careers", href: "/careers" },
-      { name: "Press", href: "/press" },
-      { name: "Blog", href: "/blog" },
     ],
     services: [
       { name: "For Riders", href: "/riders" },
       { name: "For Drivers", href: "/drivers" },
-      { name: "Business", href: "/business" },
       { name: "Pricing", href: "/pricing" },
       { name: "Cities", href: "/cities" },
     ],
     support: [
-      { name: "Help Center", href: "/help" },
       { name: "Contact Us", href: "/contact" },
       { name: "FAQ", href: "/faq" },
       { name: "Safety", href: "/safety" },
       { name: "Report Issue", href: "/report" },
     ],
     legal: [
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms of Service", href: "/terms" },
-      { name: "Cookie Policy", href: "/cookies" },
-      { name: "Accessibility", href: "/accessibility" },
+      { name: "Privacy Policy", href: "/privacy-policy" },
+      { name: "Terms of Service", href: "/terms-of-service" },
       { name: "License", href: "/license" },
     ],
   };
 
   const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
+    {
+      icon: Facebook,
+      href: "https://facebook.com/ridesharepro",
+      label: "Facebook",
+    },
+    {
+      icon: Twitter,
+      href: "https://twitter.com/ridesharepro",
+      label: "Twitter",
+    },
+    {
+      icon: Instagram,
+      href: "https://instagram.com/ridesharepro",
+      label: "Instagram",
+    },
+    {
+      icon: Linkedin,
+      href: "https://linkedin.com/company/ridesharepro",
+      label: "LinkedIn",
+    },
   ];
 
   return (

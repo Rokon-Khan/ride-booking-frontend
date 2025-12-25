@@ -97,6 +97,8 @@ import GoOnline from "@/components/dashboard/driver/GoOnline";
 import ActiveRide from "@/components/dashboard/rider/ActiveRide";
 import AboutUs from "@/pages/AboutUs";
 import PendingApproval from "@/pages/Auth/PendingApproval";
+import Careers from "@/pages/Careers";
+import Cities from "@/pages/Cities";
 import Contact from "@/pages/Contact";
 import NotificationAlert from "@/pages/Dashboard/AdminPages/NotificationAlert";
 import DriverCurrentRide from "@/pages/Dashboard/DriverPages/DriverCurrentRide";
@@ -104,9 +106,16 @@ import RideRequestsPage from "@/pages/Dashboard/DriverPages/RideRequestsPage";
 import BookRide from "@/pages/Dashboard/RiderPages/BookRide";
 import RideHistory from "@/pages/Dashboard/RiderPages/RideHistory";
 import RideHistoryDetail from "@/pages/Dashboard/RiderPages/RideHistoryDetail";
+import Drivers from "@/pages/Drivers";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
+import License from "@/pages/License";
 import Pricing from "@/pages/Pricing";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import ReportIssue from "@/pages/ReportIssue";
+import Riders from "@/pages/Riders";
+import Safety from "@/pages/Safety";
+import TermsOfService from "@/pages/TermsOfService";
 import { useUserInfoQuery } from "@/redux/features/auth/authApi";
 import { type ReactElement } from "react";
 import ProtectedRoute from "./ProtectedRoute";
@@ -143,6 +152,15 @@ const router = createBrowserRouter([
       { path: "faq", element: <FAQ /> },
       { path: "features", element: <Features /> },
       { path: "pricing", element: <Pricing /> },
+      { path: "careers", element: <Careers /> },
+      { path: "riders", element: <Riders /> },
+      { path: "drivers", element: <Drivers /> },
+      { path: "cities", element: <Cities /> },
+      { path: "safety", element: <Safety /> },
+      { path: "report", element: <ReportIssue /> },
+      { path: "privacy-policy", element: <PrivacyPolicy /> },
+      { path: "terms-of-service", element: <TermsOfService /> },
+      { path: "license", element: <License /> },
     ],
   },
 

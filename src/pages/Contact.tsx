@@ -85,7 +85,7 @@ const Contact = () => {
         {/* Hero Section */}
         <section className="bg-gradient-hero text-white section-padding">
           <div className="container-width text-center">
-            <h1 className="text-hero mb-6">
+            <h1 className="text-hero text-white mb-6">
               Get In
               <br />
               <span className="text-secondary">Touch</span>
