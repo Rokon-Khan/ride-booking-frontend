@@ -1,123 +1,140 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Users, Car, Clock } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Car, Clock, MapPin, Users } from "lucide-react";
 import { useEffect, useRef } from "react";
+
+declare global {
+  interface Window {
+    google: any;
+    initMap: () => void;
+  }
+}
+
+const cities = [
+  {
+    name: "Dhaka",
+    division: "Dhaka Division",
+    population: "9.5M+",
+    drivers: "2,500+",
+    rides: "50,000+",
+    coordinates: { lat: 23.8103, lng: 90.4125 },
+    description:
+      "The capital and largest city of Bangladesh, our biggest market.",
+  },
+  {
+    name: "Chittagong",
+    division: "Chittagong Division",
+    population: "3.2M+",
+    drivers: "800+",
+    rides: "15,000+",
+    coordinates: { lat: 22.3569, lng: 91.7832 },
+    description: "Major port city and commercial hub of Bangladesh.",
+  },
+  {
+    name: "Khulna",
+    division: "Khulna Division",
+    population: "1.8M+",
+    drivers: "400+",
+    rides: "8,000+",
+    coordinates: { lat: 22.8456, lng: 89.5403 },
+    description: "Industrial city known for shrimp and jute production.",
+  },
+  {
+    name: "Rajshahi",
+    division: "Rajshahi Division",
+    population: "1.2M+",
+    drivers: "300+",
+    rides: "6,000+",
+    coordinates: { lat: 24.3745, lng: 88.6042 },
+    description: "Educational hub with several universities and colleges.",
+  },
+  {
+    name: "Barishal",
+    division: "Barishal Division",
+    population: "800K+",
+    drivers: "200+",
+    rides: "4,000+",
+    coordinates: { lat: 22.701, lng: 90.3535 },
+    description: "River port city in southern Bangladesh.",
+  },
+  {
+    name: "Rangpur",
+    division: "Rangpur Division",
+    population: "900K+",
+    drivers: "250+",
+    rides: "5,000+",
+    coordinates: { lat: 25.7439, lng: 89.2752 },
+    description: "Agricultural center in northern Bangladesh.",
+  },
+  {
+    name: "Sylhet",
+    division: "Sylhet Division",
+    population: "700K+",
+    drivers: "180+",
+    rides: "3,500+",
+    coordinates: { lat: 24.8949, lng: 91.8687 },
+    description: "Tea capital of Bangladesh with beautiful landscapes.",
+  },
+  {
+    name: "Mymensingh",
+    division: "Mymensingh Division",
+    population: "600K+",
+    drivers: "150+",
+    rides: "3,000+",
+    coordinates: { lat: 24.7471, lng: 90.4203 },
+    description: "Agricultural university town with rich cultural heritage.",
+  },
+];
 
 const Cities = () => {
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const cities = [
-    {
-      name: "Dhaka",
-      division: "Dhaka Division",
-      population: "9.5M+",
-      drivers: "2,500+",
-      rides: "50,000+",
-      coordinates: { lat: 23.8103, lng: 90.4125 },
-      description: "The capital and largest city of Bangladesh, our biggest market.",
-    },
-    {
-      name: "Chittagong",
-      division: "Chittagong Division", 
-      population: "3.2M+",
-      drivers: "800+",
-      rides: "15,000+",
-      coordinates: { lat: 22.3569, lng: 91.7832 },
-      description: "Major port city and commercial hub of Bangladesh.",
-    },
-    {
-      name: "Khulna",
-      division: "Khulna Division",
-      population: "1.8M+",
-      drivers: "400+",
-      rides: "8,000+",
-      coordinates: { lat: 22.8456, lng: 89.5403 },
-      description: "Industrial city known for shrimp and jute production.",
-    },
-    {
-      name: "Rajshahi",
-      division: "Rajshahi Division",
-      population: "1.2M+",
-      drivers: "300+",
-      rides: "6,000+",
-      coordinates: { lat: 24.3745, lng: 88.6042 },
-      description: "Educational hub with several universities and colleges.",
-    },
-    {
-      name: "Barishal",
-      division: "Barishal Division",
-      population: "800K+",
-      drivers: "200+",
-      rides: "4,000+",
-      coordinates: { lat: 22.7010, lng: 90.3535 },
-      description: "River port city in southern Bangladesh.",
-    },
-    {
-      name: "Rangpur",
-      division: "Rangpur Division",
-      population: "900K+",
-      drivers: "250+",
-      rides: "5,000+",
-      coordinates: { lat: 25.7439, lng: 89.2752 },
-      description: "Agricultural center in northern Bangladesh.",
-    },
-    {
-      name: "Sylhet",
-      division: "Sylhet Division",
-      population: "700K+",
-      drivers: "180+",
-      rides: "3,500+",
-      coordinates: { lat: 24.8949, lng: 91.8687 },
-      description: "Tea capital of Bangladesh with beautiful landscapes.",
-    },
-    {
-      name: "Mymensingh",
-      division: "Mymensingh Division",
-      population: "600K+",
-      drivers: "150+",
-      rides: "3,000+",
-      coordinates: { lat: 24.7471, lng: 90.4203 },
-      description: "Agricultural university town with rich cultural heritage.",
-    },
-  ];
-
   useEffect(() => {
-    const initMap = () => {
+    const initMap = async () => {
       if (!mapRef.current || !window.google) return;
 
+      // Import the required libraries
+      const { Map } = await window.google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
+        "marker"
+      );
+
       // Center map on Bangladesh
-      const map = new window.google.maps.Map(mapRef.current, {
+      const map = new Map(mapRef.current, {
         zoom: 7,
-        center: { lat: 23.6850, lng: 90.3563 },
-        styles: [
-          {
-            featureType: "all",
-            elementType: "geometry.fill",
-            stylers: [{ color: "#f5f5f5" }],
-          },
-          {
-            featureType: "water",
-            elementType: "geometry",
-            stylers: [{ color: "#e9e9e9" }],
-          },
-        ],
+        center: { lat: 23.685, lng: 90.3563 },
+        mapId: "RIDESHARE_MAP", // Required for AdvancedMarkerElement
+        // styles: [
+        //   {
+        //     featureType: "all",
+        //     elementType: "geometry.fill",
+        //     stylers: [{ color: "#f5f5f5" }],
+        //   },
+        //   {
+        //     featureType: "water",
+        //     elementType: "geometry",
+        //     stylers: [{ color: "#e9e9e9" }],
+        //   },
+        // ],
       });
 
       // Add markers for each city
       cities.forEach((city) => {
-        const marker = new window.google.maps.Marker({
+        // Create custom marker element
+        const markerContent = document.createElement("div");
+        markerContent.innerHTML = `
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" fill="#3b82f6" stroke="white" stroke-width="4"/>
+            <circle cx="20" cy="20" r="8" fill="white"/>
+          </svg>
+        `;
+
+        const marker = new AdvancedMarkerElement({
           position: city.coordinates,
           map: map,
           title: city.name,
-          icon: {
-            url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="18" fill="#3b82f6" stroke="white" stroke-width="4"/>
-                <circle cx="20" cy="20" r="8" fill="white"/>
-              </svg>
-            `),
-            scaledSize: new window.google.maps.Size(40, 40),
-          },
+          content: markerContent,
         });
 
         const infoWindow = new window.google.maps.InfoWindow({
@@ -142,7 +159,10 @@ const Cities = () => {
     // Load Google Maps API if not already loaded
     if (!window.google) {
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO_BcqzKg0VNhE&libraries=places&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${
+        import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+      }&loading=async&callback=initMap`;
+
       script.async = true;
       script.defer = true;
       window.initMap = initMap;
@@ -162,7 +182,8 @@ const Cities = () => {
               We're Expanding Across Bangladesh
             </h1>
             <p className="text-xl text-white/90 mb-8">
-              RideShare Pro is available in major cities across Bangladesh, connecting millions of riders with thousands of drivers.
+              RideShare Pro is available in major cities across Bangladesh,
+              connecting millions of riders with thousands of drivers.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
               <div className="text-center">
@@ -192,12 +213,13 @@ const Cities = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Service Areas</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore the cities where RideShare Pro is available. Click on any city marker to see more details.
+              Explore the cities where RideShare Pro is available. Click on any
+              city marker to see more details.
             </p>
           </div>
 
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div 
+            <div
               ref={mapRef}
               className="w-full h-[500px]"
               style={{ minHeight: "500px" }}
@@ -224,11 +246,15 @@ const Cities = () => {
                     <MapPin className="h-5 w-5 text-primary" />
                     <CardTitle className="text-lg">{city.name}</CardTitle>
                   </div>
-                  <p className="text-sm text-muted-foreground">{city.division}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {city.division}
+                  </p>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">{city.description}</p>
-                  
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {city.description}
+                  </p>
+
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -237,7 +263,7 @@ const Cities = () => {
                       </div>
                       <Badge variant="secondary">{city.population}</Badge>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Car className="h-4 w-4 text-muted-foreground" />
@@ -245,7 +271,7 @@ const Cities = () => {
                       </div>
                       <Badge variant="outline">{city.drivers}</Badge>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-muted-foreground" />
@@ -276,23 +302,29 @@ const Cities = () => {
               <CardContent className="pt-6">
                 <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
                 <h3 className="font-semibold mb-2">Cumilla</h3>
-                <p className="text-sm text-muted-foreground">Expected launch: Q2 2025</p>
+                <p className="text-sm text-muted-foreground">
+                  Expected launch: Q2 2025
+                </p>
               </CardContent>
             </Card>
-            
+
             <Card className="text-center">
               <CardContent className="pt-6">
                 <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
                 <h3 className="font-semibold mb-2">Jessore</h3>
-                <p className="text-sm text-muted-foreground">Expected launch: Q3 2025</p>
+                <p className="text-sm text-muted-foreground">
+                  Expected launch: Q3 2025
+                </p>
               </CardContent>
             </Card>
-            
+
             <Card className="text-center">
               <CardContent className="pt-6">
                 <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
                 <h3 className="font-semibold mb-2">Bogura</h3>
-                <p className="text-sm text-muted-foreground">Expected launch: Q4 2025</p>
+                <p className="text-sm text-muted-foreground">
+                  Expected launch: Q4 2025
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -304,7 +336,8 @@ const Cities = () => {
         <div className="container-width text-center">
           <h2 className="text-3xl font-bold mb-4">Don't See Your City?</h2>
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-            Let us know where you'd like to see RideShare Pro next. We're always looking to expand to new areas.
+            Let us know where you'd like to see RideShare Pro next. We're always
+            looking to expand to new areas.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors">

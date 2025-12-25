@@ -1,19 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
-  DollarSign, 
-  Clock, 
-  Smartphone, 
-  Shield, 
-  TrendingUp, 
-  Users,
-  Car,
-  MapPin,
-  Calendar,
+// import { Badge } from "@/components/ui/badge";
+import {
   BarChart3,
+  Car,
+  Clock,
+  DollarSign,
   HeadphonesIcon,
-  Zap
+  MapPin,
+  Shield,
+  Smartphone,
+  TrendingUp,
+  Users,
+  Zap,
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -22,32 +21,38 @@ const Drivers = () => {
     {
       icon: DollarSign,
       title: "Flexible Earnings",
-      description: "Earn money on your schedule. Drive when you want, as much as you want.",
+      description:
+        "Earn money on your schedule. Drive when you want, as much as you want.",
     },
     {
       icon: Clock,
       title: "Work Your Hours",
-      description: "Set your own schedule. Work full-time, part-time, or just weekends.",
+      description:
+        "Set your own schedule. Work full-time, part-time, or just weekends.",
     },
     {
       icon: Smartphone,
       title: "Easy-to-Use App",
-      description: "Simple driver app with navigation, earnings tracking, and ride management.",
+      description:
+        "Simple driver app with navigation, earnings tracking, and ride management.",
     },
     {
       icon: Shield,
       title: "Insurance Coverage",
-      description: "Drive with confidence knowing you're covered with our insurance policy.",
+      description:
+        "Drive with confidence knowing you're covered with our insurance policy.",
     },
     {
       icon: TrendingUp,
       title: "Weekly Payouts",
-      description: "Get paid weekly with direct bank transfer. Track your earnings in real-time.",
+      description:
+        "Get paid weekly with direct bank transfer. Track your earnings in real-time.",
     },
     {
       icon: Users,
       title: "Driver Community",
-      description: "Join a supportive community of drivers with tips, support, and networking.",
+      description:
+        "Join a supportive community of drivers with tips, support, and networking.",
     },
   ];
 
@@ -82,7 +87,7 @@ const Drivers = () => {
         "Car model 2010 or newer",
         "Valid registration documents",
         "Comprehensive insurance",
-        "Regular maintenance records"
+        "Regular maintenance records",
       ],
     },
     {
@@ -92,7 +97,7 @@ const Drivers = () => {
         "Valid driving license (3+ years)",
         "Clean driving record",
         "Age 21-65 years",
-        "Background verification"
+        "Background verification",
       ],
     },
     {
@@ -102,7 +107,7 @@ const Drivers = () => {
         "Smartphone with GPS",
         "Reliable internet connection",
         "RideShare Pro driver app",
-        "Basic smartphone skills"
+        "Basic smartphone skills",
       ],
     },
   ];
@@ -116,17 +121,20 @@ const Drivers = () => {
     {
       icon: BarChart3,
       title: "Earnings Analytics",
-      description: "Track your performance with detailed earnings and trip analytics.",
+      description:
+        "Track your performance with detailed earnings and trip analytics.",
     },
     {
       icon: MapPin,
       title: "Smart Navigation",
-      description: "Built-in GPS navigation with traffic updates and optimal routes.",
+      description:
+        "Built-in GPS navigation with traffic updates and optimal routes.",
     },
     {
       icon: Zap,
       title: "Instant Notifications",
-      description: "Get notified instantly about new ride requests and updates.",
+      description:
+        "Get notified instantly about new ride requests and updates.",
     },
   ];
 
@@ -141,13 +149,23 @@ const Drivers = () => {
                 Drive & Earn with RideShare Pro
               </h1>
               <p className="text-xl text-white/90 mb-8">
-                Turn your car into a source of income. Join thousands of drivers earning flexible income on their own schedule.
+                Turn your car into a source of income. Join thousands of drivers
+                earning flexible income on their own schedule.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" variant="secondary" className="text-primary" asChild>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="text-primary"
+                  asChild
+                >
                   <Link to="/signup">Start Driving</Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-primary"
+                >
                   Learn More
                 </Button>
               </div>
@@ -163,9 +181,9 @@ const Drivers = () => {
               </div>
             </div>
             <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&h=400&fit=crop" 
-                alt="Happy driver with car" 
+              <img
+                src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&h=400&fit=crop"
+                alt="Happy driver with car"
                 className="rounded-lg shadow-2xl"
               />
             </div>
@@ -179,7 +197,8 @@ const Drivers = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Why Drive with Us?</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Enjoy the freedom and flexibility of being your own boss while earning good money.
+              Enjoy the freedom and flexibility of being your own boss while
+              earning good money.
             </p>
           </div>
 
@@ -187,13 +206,18 @@ const Drivers = () => {
             {driverFeatures.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <Card key={index} className="text-center hover:shadow-md transition-shadow">
+                <Card
+                  key={index}
+                  className="text-center hover:shadow-md transition-shadow"
+                >
                   <CardHeader>
                     <Icon className="h-12 w-12 text-primary mx-auto mb-4" />
                     <CardTitle>{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground">{feature.description}</p>
+                    <p className="text-muted-foreground">
+                      {feature.description}
+                    </p>
                   </CardContent>
                 </Card>
               );
@@ -217,10 +241,14 @@ const Drivers = () => {
               <Card key={index} className="text-center">
                 <CardHeader>
                   <CardTitle className="text-lg">{item.category}</CardTitle>
-                  <div className="text-2xl font-bold text-primary">{item.amount}</div>
+                  <div className="text-2xl font-bold text-primary">
+                    {item.amount}
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {item.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -228,19 +256,27 @@ const Drivers = () => {
 
           <div className="mt-12 text-center">
             <div className="bg-primary/10 rounded-lg p-6 max-w-2xl mx-auto">
-              <h3 className="text-xl font-semibold mb-2">Potential Weekly Earnings</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Potential Weekly Earnings
+              </h3>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-2xl font-bold text-primary">৳3,500</div>
-                  <div className="text-sm text-muted-foreground">Part-time (15 hrs/week)</div>
+                  <div className="text-sm text-muted-foreground">
+                    Part-time (15 hrs/week)
+                  </div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-primary">৳7,000</div>
-                  <div className="text-sm text-muted-foreground">Regular (30 hrs/week)</div>
+                  <div className="text-sm text-muted-foreground">
+                    Regular (30 hrs/week)
+                  </div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-primary">৳12,000</div>
-                  <div className="text-sm text-muted-foreground">Full-time (50 hrs/week)</div>
+                  <div className="text-sm text-muted-foreground">
+                    Full-time (50 hrs/week)
+                  </div>
                 </div>
               </div>
             </div>
@@ -303,7 +339,9 @@ const Drivers = () => {
                     <Icon className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </div>
               );
             })}
@@ -367,13 +405,24 @@ const Drivers = () => {
         <div className="container-width text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Start Earning?</h2>
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-            Join our community of successful drivers and start earning money on your own terms today.
+            Join our community of successful drivers and start earning money on
+            your own terms today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-primary" asChild>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="text-primary"
+              asChild
+            >
               <Link to="/signup">Apply to Drive</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary" asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-white text-white hover:bg-white hover:text-primary"
+              asChild
+            >
               <Link to="/contact">Have Questions?</Link>
             </Button>
           </div>

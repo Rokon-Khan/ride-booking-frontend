@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Smartphone, 
-  MapPin, 
-  CreditCard, 
-  Shield, 
-  Clock, 
+// import { Badge } from "@/components/ui/badge";
+import {
+  Clock,
+  CreditCard,
+  HeadphonesIcon,
+  MapPin,
+  Shield,
+  Smartphone,
   Star,
   Users,
   Zap,
-  HeadphonesIcon
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -19,32 +19,38 @@ const Riders = () => {
     {
       icon: Smartphone,
       title: "Easy Booking",
-      description: "Book a ride in seconds with our intuitive mobile app. Just set your pickup and destination.",
+      description:
+        "Book a ride in seconds with our intuitive mobile app. Just set your pickup and destination.",
     },
     {
       icon: MapPin,
       title: "Real-time Tracking",
-      description: "Track your driver's location in real-time and get accurate arrival estimates.",
+      description:
+        "Track your driver's location in real-time and get accurate arrival estimates.",
     },
     {
       icon: CreditCard,
       title: "Multiple Payment Options",
-      description: "Pay with cash, mobile banking, or credit card. Choose what's convenient for you.",
+      description:
+        "Pay with cash, mobile banking, or credit card. Choose what's convenient for you.",
     },
     {
       icon: Shield,
       title: "Safety First",
-      description: "All drivers are verified with background checks. Share your trip with family for peace of mind.",
+      description:
+        "All drivers are verified with background checks. Share your trip with family for peace of mind.",
     },
     {
       icon: Clock,
       title: "24/7 Availability",
-      description: "Need a ride anytime? We're available round the clock, every day of the year.",
+      description:
+        "Need a ride anytime? We're available round the clock, every day of the year.",
     },
     {
       icon: Star,
       title: "Rate & Review",
-      description: "Rate your experience and help maintain high service quality for everyone.",
+      description:
+        "Rate your experience and help maintain high service quality for everyone.",
     },
   ];
 
@@ -73,22 +79,26 @@ const Riders = () => {
     {
       icon: Shield,
       title: "Driver Verification",
-      description: "All drivers undergo thorough background checks and vehicle inspections.",
+      description:
+        "All drivers undergo thorough background checks and vehicle inspections.",
     },
     {
       icon: Users,
       title: "Share Trip Details",
-      description: "Share your trip details with trusted contacts for added security.",
+      description:
+        "Share your trip details with trusted contacts for added security.",
     },
     {
       icon: Zap,
       title: "Emergency SOS",
-      description: "One-tap emergency button to alert authorities and emergency contacts.",
+      description:
+        "One-tap emergency button to alert authorities and emergency contacts.",
     },
     {
       icon: HeadphonesIcon,
       title: "24/7 Support",
-      description: "Round-the-clock customer support for any issues or concerns.",
+      description:
+        "Round-the-clock customer support for any issues or concerns.",
     },
   ];
 
@@ -103,21 +113,31 @@ const Riders = () => {
                 Ride with Confidence
               </h1>
               <p className="text-xl text-white/90 mb-8">
-                Get reliable, safe, and affordable rides across Bangladesh. Your journey starts with just a tap.
+                Get reliable, safe, and affordable rides across Bangladesh. Your
+                journey starts with just a tap.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" variant="secondary" className="text-primary" asChild>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="text-primary"
+                  asChild
+                >
                   <Link to="/signup">Start Riding</Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-primary"
+                >
                   Learn More
                 </Button>
               </div>
             </div>
             <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&h=400&fit=crop" 
-                alt="Happy rider in car" 
+              <img
+                src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&h=400&fit=crop"
+                alt="Happy rider in car"
                 className="rounded-lg shadow-2xl"
               />
             </div>
@@ -129,9 +149,12 @@ const Riders = () => {
       <section className="py-16">
         <div className="container-width">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose RideShare Pro?</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Why Choose RideShare Pro?
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Experience the best ride-sharing service with features designed for your comfort and convenience.
+              Experience the best ride-sharing service with features designed
+              for your comfort and convenience.
             </p>
           </div>
 
@@ -139,13 +162,18 @@ const Riders = () => {
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <Card key={index} className="text-center hover:shadow-md transition-shadow">
+                <Card
+                  key={index}
+                  className="text-center hover:shadow-md transition-shadow"
+                >
                   <CardHeader>
                     <Icon className="h-12 w-12 text-primary mx-auto mb-4" />
                     <CardTitle>{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground">{feature.description}</p>
+                    <p className="text-muted-foreground">
+                      {feature.description}
+                    </p>
                   </CardContent>
                 </Card>
               );
@@ -170,7 +198,9 @@ const Riders = () => {
                 <CardHeader>
                   <CardTitle className="text-xl">{type.name}</CardTitle>
                   <p className="text-muted-foreground">{type.description}</p>
-                  <div className="text-2xl font-bold text-primary">{type.price}</div>
+                  <div className="text-2xl font-bold text-primary">
+                    {type.price}
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -193,9 +223,12 @@ const Riders = () => {
       <section className="py-16">
         <div className="container-width">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Your Safety is Our Priority</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Your Safety is Our Priority
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We've built comprehensive safety features to ensure you feel secure on every ride.
+              We've built comprehensive safety features to ensure you feel
+              secure on every ride.
             </p>
           </div>
 
@@ -208,7 +241,9 @@ const Riders = () => {
                     <Icon className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </div>
               );
             })}
@@ -263,13 +298,24 @@ const Riders = () => {
         <div className="container-width text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Start Riding?</h2>
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied riders who trust RideShare Pro for their daily commute and special trips.
+            Join thousands of satisfied riders who trust RideShare Pro for their
+            daily commute and special trips.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-primary" asChild>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="text-primary"
+              asChild
+            >
               <Link to="/signup">Sign Up Now</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary" asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-white text-white hover:bg-white hover:text-primary"
+              asChild
+            >
               <Link to="/contact">Contact Support</Link>
             </Button>
           </div>
